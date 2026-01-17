@@ -6,6 +6,7 @@ use App\Contracts\TaskRepositoryInterface;
 use App\Models\Task;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -30,17 +31,23 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function create(array $data): Task
     {
-        return $this->model->create($data);
+        return DB::transaction(function () use ($data) {
+            return $this->model->create($data);
+        });
     }
 
     public function update($model, array $data)
     {
-        $model->update($data);
-        return $model->fresh();
+        return DB::transaction(function () use ($model, $data) {
+            $model->update($data);
+            return $model->fresh();
+        });
     }
 
     public function delete($model): bool
     {
-        return $model->delete();
+        return DB::transaction(function () use ($model) {
+            return $model->delete();
+        });
     }
 }

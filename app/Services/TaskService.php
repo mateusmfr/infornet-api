@@ -6,7 +6,6 @@ use App\Contracts\TaskRepositoryInterface;
 use App\Models\Task;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
 
 class TaskService
 {
@@ -31,31 +30,16 @@ class TaskService
 
     public function createTask(array $data): Task
     {
-        try {
-            return $this->repository->create($data);
-        } catch (\Exception $e) {
-            Log::error('Error creating task: ' . $e->getMessage());
-            throw $e;
-        }
+        return $this->repository->create($data);
     }
 
     public function updateTask(Task $task, array $data): Task
     {
-        try {
-            return $this->repository->update($task, $data);
-        } catch (\Exception $e) {
-            Log::error('Error updating task: ' . $e->getMessage());
-            throw $e;
-        }
+        return $this->repository->update($task, $data);
     }
 
     public function deleteTask(Task $task): bool
     {
-        try {
-            return $this->repository->delete($task);
-        } catch (\Exception $e) {
-            Log::error('Error deleting task: ' . $e->getMessage());
-            throw $e;
-        }
+        return $this->repository->delete($task);
     }
 }
