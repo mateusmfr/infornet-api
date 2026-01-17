@@ -1,59 +1,353 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-12.x-red?style=flat&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.4-blue?style=flat&logo=php)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)
+![Tests](https://img.shields.io/badge/Tests-14%20passed-success?style=flat)
 
-## About Laravel
+A RESTful API built with Laravel 12 and PHP 8.4, featuring a complete Task CRUD with Repository and Service patterns, Docker environment, and comprehensive test coverage.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Technologies](#-technologies)
+- [Requirements](#-requirements)
+- [Installation](#-installation)
+- [Available Commands](#-available-commands)
+- [API Endpoints](#-api-endpoints)
+- [Testing](#-testing)
+- [Project Structure](#-project-structure)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Features
 
-## Learning Laravel
+- ✅ Complete Task CRUD (Create, Read, Update, Delete)
+- ✅ Repository and Service pattern architecture
+- ✅ Request validation with Form Requests
+- ✅ API Resources for standardized JSON responses
+- ✅ Pagination support (10 items per page)
+- ✅ Docker environment with MySQL 8.0
+- ✅ One-command setup with Makefile
+- ✅ Comprehensive feature tests (14 tests, 99 assertions)
+- ✅ ISO8601 timestamp formatting
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🏗 Architecture
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+This project follows **clean architecture** principles with separation of concerns:
 
-## Laravel Sponsors
+```
+┌─────────────┐
+│  Controller │  ← HTTP Layer (validation, responses)
+└──────┬──────┘
+       │
+┌──────▼──────┐
+│   Service   │  ← Business Logic Layer
+└──────┬──────┘
+       │
+┌──────▼──────┐
+│ Repository  │  ← Data Access Layer
+└──────┬──────┘
+       │
+┌──────▼──────┐
+│    Model    │  ← Eloquent ORM
+└─────────────┘
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**Key Components:**
 
-### Premium Partners
+- **BaseRepositoryInterface**: Generic CRUD operations for any model
+- **TaskRepositoryInterface**: Extends base with pagination
+- **TaskRepository**: Eloquent implementation
+- **TaskService**: Business logic with error handling
+- **TaskController**: RESTful endpoints
+- **ApiResponse Trait**: Standardized JSON responses
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🛠 Technologies
 
-## Contributing
+- **Framework**: Laravel 12.47.0
+- **PHP**: 8.4-cli
+- **Database**: MySQL 8.0
+- **Containerization**: Docker & Docker Compose
+- **Web Server**: PHP built-in server
+- **Testing**: PHPUnit
+- **Automation**: Makefile
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📦 Requirements
 
-## Code of Conduct
+- Docker and Docker Compose
+- Make (optional, for convenience commands)
+- Git
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🚀 Installation
 
-## Security Vulnerabilities
+### Quick Start (Recommended)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# Clone the repository
+git clone https://github.com/mateusmfr/infornet-api.git
+cd infornet-api
 
-## License
+# One-command setup (creates .env, installs dependencies, runs migrations)
+make setup
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# (Optional) Seed database with 20 sample tasks
+make seed
+```
+
+The API will be available at `http://localhost:8000`
+
+### Manual Setup
+
+```bash
+# Copy environment file
+cp .env.example .env
+
+# Start Docker containers
+docker-compose up -d
+
+# Install dependencies
+docker-compose exec app composer install
+
+# Generate application key
+docker-compose exec app php artisan key:generate
+
+# Run migrations
+docker-compose exec app php artisan migrate
+
+# (Optional) Seed database
+docker-compose exec app php artisan db:seed
+```
+
+## 🎯 Available Commands
+
+```bash
+make setup        # Complete environment setup
+make up           # Start containers
+make down         # Stop containers
+make restart      # Restart containers
+make logs         # View container logs
+make migrate      # Run migrations
+make seed         # Populate database with sample data
+make test         # Run test suite
+make clean        # Clean environment (removes volumes and cache)
+```
+
+## 📡 API Endpoints
+
+**Base URL**: `http://localhost:8000/api`
+
+### List Tasks (Paginated)
+
+```bash
+GET /tasks
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Tasks retrieved successfully",
+  "data": {
+    "data": [
+      {
+        "id": 1,
+        "title": "Setup Laravel project",
+        "description": "Initialize Laravel with Docker",
+        "completed": true,
+        "created_at": "2026-01-17T12:00:00.000Z",
+        "updated_at": "2026-01-17T12:00:00.000Z"
+      }
+    ],
+    "links": { ... },
+    "meta": {
+      "current_page": 1,
+      "last_page": 2,
+      "per_page": 10,
+      "total": 20
+    }
+  }
+}
+```
+
+### Create Task
+
+```bash
+POST /tasks
+Content-Type: application/json
+
+{
+  "title": "New task",
+  "description": "Task description",
+  "completed": false
+}
+```
+
+**Validation Rules:**
+- `title`: required, string, max 255 characters
+- `description`: optional, string
+- `completed`: optional, boolean
+
+**Response (201):**
+```json
+{
+  "success": true,
+  "message": "Task created successfully",
+  "data": {
+    "id": 21,
+    "title": "New task",
+    "description": "Task description",
+    "completed": false,
+    "created_at": "2026-01-17T12:00:00.000Z",
+    "updated_at": "2026-01-17T12:00:00.000Z"
+  }
+}
+```
+
+### Get Task by ID
+
+```bash
+GET /tasks/{id}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Task retrieved successfully",
+  "data": {
+    "id": 1,
+    "title": "Setup Laravel project",
+    "description": "Initialize Laravel with Docker",
+    "completed": true,
+    "created_at": "2026-01-17T12:00:00.000Z",
+    "updated_at": "2026-01-17T12:00:00.000Z"
+  }
+}
+```
+
+**Response (404):**
+```json
+{
+  "message": "No query results for model [App\\Models\\Task] 1"
+}
+```
+
+### Update Task
+
+```bash
+PUT /tasks/{id}
+Content-Type: application/json
+
+{
+  "title": "Updated title",
+  "description": "Updated description",
+  "completed": true
+}
+```
+
+**Note:** All fields are optional (partial update supported)
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Task updated successfully",
+  "data": {
+    "id": 1,
+    "title": "Updated title",
+    "description": "Updated description",
+    "completed": true,
+    "created_at": "2026-01-17T12:00:00.000Z",
+    "updated_at": "2026-01-17T12:30:00.000Z"
+  }
+}
+```
+
+### Delete Task
+
+```bash
+DELETE /tasks/{id}
+```
+
+**Response (204):** No Content
+
+### cURL Examples
+
+```bash
+# List all tasks
+curl http://localhost:8000/api/tasks
+
+# Create a task
+curl -X POST http://localhost:8000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test Task","description":"Testing API","completed":false}'
+
+# Get task by ID
+curl http://localhost:8000/api/tasks/1
+
+# Update task
+curl -X PUT http://localhost:8000/api/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"completed":true}'
+
+# Delete task
+curl -X DELETE http://localhost:8000/api/tasks/1
+```
+
+## 🧪 Testing
+
+Run the complete test suite:
+
+```bash
+make test
+```
+
+**Test Coverage:**
+- ✅ List tasks with pagination
+- ✅ Create task with valid data
+- ✅ Validation errors (title required, max length, boolean type)
+- ✅ Show task by ID
+- ✅ 404 responses for non-existent tasks
+- ✅ Update task (full and partial)
+- ✅ Delete task
+- **Total:** 14 tests, 99 assertions
+
+## 📁 Project Structure
+
+```
+infornet-api/
+├── app/
+│   ├── Contracts/
+│   │   ├── BaseRepositoryInterface.php
+│   │   └── TaskRepositoryInterface.php
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   └── TaskController.php
+│   │   ├── Requests/
+│   │   │   ├── StoreTaskRequest.php
+│   │   │   └── UpdateTaskRequest.php
+│   │   ├── Resources/
+│   │   │   └── TaskResource.php
+│   │   └── Traits/
+│   │       └── ApiResponse.php
+│   ├── Models/
+│   │   └── Task.php
+│   ├── Repositories/
+│   │   └── TaskRepository.php
+│   └── Services/
+│       └── TaskService.php
+├── database/
+│   ├── migrations/
+│   │   └── 2026_01_16_233153_create_tasks_table.php
+│   └── seeders/
+│       └── TaskSeeder.php
+├── routes/
+│   └── api.php
+├── tests/
+│   └── Feature/
+│       └── TaskControllerTest.php
+├── docker-compose.yml
+├── Dockerfile
+├── Makefile
+└── Procfile
+```
