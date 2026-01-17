@@ -51,9 +51,10 @@ migrate:
 	@echo "🗄️  Executando migrations..."
 	@$(DOCKER_COMPOSE) exec app php artisan migrate
 
-fresh:
-	@echo "🗄️  Recriando banco de dados..."
-	@$(DOCKER_COMPOSE) exec app php artisan migrate:fresh --seed
+seed:
+	@echo "🌱 Populando banco de dados..."
+	@$(DOCKER_COMPOSE) exec app php artisan db:seed
+	@echo "✅ Dados inseridos!"
 
 test:
 	@echo "🧪 Executando testes..."
