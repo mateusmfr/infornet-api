@@ -19,7 +19,7 @@ class TaskService
         return $this->repository->all();
     }
 
-    public function getPaginatedTasks(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedTasks(int $perPage = 10): LengthAwarePaginator
     {
         return $this->repository->paginate($perPage);
     }
